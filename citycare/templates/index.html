@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityCare | Home</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="{{ url_for('index') }}" class="logo">CityCare</a>
+
+    <div class="nav-links">
+        <a href="{{ url_for('index') }}">Home</a>
+        <a href="{{ url_for('login') }}">Login</a>
+        <a href="{{ url_for('register') }}">Register</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <section class="hero">
+        <h1>Welcome to CityCare</h1>
+
+        <p>
+            A smarter way to report civic problems and help
+            make our city cleaner, safer, and better.
+        </p>
+
+        <a href="{{ url_for('register') }}" class="btn btn-light">
+            Get Started
+        </a>
+
+        <a href="{{ url_for('login') }}" class="btn">
+            Login
+        </a>
+    </section>
+
+    <h2 class="page-title" style="text-align:center; margin-top:40px;">
+        Our Services
+    </h2>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>🛣️ Road Problems</h3>
+            <p>Report potholes, damaged roads, and other road issues.</p>
+        </div>
+
+        <div class="card">
+            <h3>💧 Water Supply</h3>
+            <p>Report water shortages and water supply problems.</p>
+        </div>
+
+        <div class="card">
+            <h3>🗑️ Garbage Management</h3>
+            <p>Report garbage collection and cleanliness issues.</p>
+        </div>
+
+        <div class="card">
+            <h3>📋 Complaint Tracking</h3>
+            <p>Check the progress of your submitted complaints.</p>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    <p>CityCare &copy; 2026 | Smart Civic Complaint Management System</p>
+</footer>
+
+</body>
+</html>

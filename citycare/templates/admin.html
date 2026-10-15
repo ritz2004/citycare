@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityCare | Admin Dashboard</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="{{ url_for('admin') }}" class="logo">CityCare Admin</a>
+
+    <div class="nav-links">
+        <a href="{{ url_for('admin') }}">Dashboard</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <h1 class="page-title">Admin Dashboard</h1>
+
+    <p>Welcome, {{ session.get('name', 'Administrator') }}.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <div class="stats">
+
+        <div class="stat-card">
+            <h2>{{ total }}</h2>
+            <p>Total Complaints</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ pending }}</h2>
+            <p>Pending Complaints</p>
+        </div>
+
+        <div class="stat-card">
+            <h2>{{ resolved }}</h2>
+            <p>Resolved Complaints</p>
+        </div>
+
+    </div>
+
+    <h2>All Complaints</h2>
+
+    {% if complaints %}
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Citizen</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Location</th>
+                        <th>Description</th>
+                        <th>Status</th>
+                        <th>Update</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for complaint in complaints %}
+                    <tr>
+                        <td>{{ complaint['id'] }}</td>
+                        <td>
+                            {{ complaint['name'] }}<br>
+                            <small>{{ complaint['email'] }}</small>
+                        </td>
+                        <td>{{ complaint['title'] }}</td>
+                        <td>{{ complaint['category'] }}</td>
+                        <td>{{ complaint['location'] }}</td>
+                        <td>{{ complaint['description'] }}</td>
+                        <td>
+                            <span class="badge {{ complaint['status'].replace(' ', '-') }}">
+                                {{ complaint['status'] }}
+                            </span>
+                        </td>
+                        <td>
+                            <form class="status-form"
+                                  method="POST"
+                                  action="{{ url_for('update_status', complaint_id=complaint['id']) }}">
+
+                                <select name="status" required>
+                                    <option value="Pending"
+                                        {% if complaint['status'] == 'Pending' %}selected{% endif %}>
+                                        Pending
+                                    </option>
+
+                                    <option value="In Progress"
+                                        {% if complaint['status'] == 'In Progress' %}selected{% endif %}>
+                                        In Progress
+                                    </option>
+
+                                    <option value="Resolved"
+                                        {% if complaint['status'] == 'Resolved' %}selected{% endif %}>
+                                        Resolved
+                                    </option>
+                                </select>
+
+                                <button type="submit" class="btn btn-small">
+                                    Save
+                                </button>
+
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    {% else %}
+
+        <div class="card empty">
+            <h3>No complaints found</h3>
+            <p>Complaints submitted by users will appear here.</p>
+        </div>
+
+    {% endif %}
+
+</div>
+
+<footer>
+    <p>CityCare | Administrator Panel</p>
+</footer>
+
+</body>
+</html>

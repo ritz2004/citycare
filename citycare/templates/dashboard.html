@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CityCare | Dashboard</title>
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="{{ url_for('dashboard') }}" class="logo">CityCare</a>
+
+    <div class="nav-links">
+        <a href="{{ url_for('dashboard') }}">Dashboard</a>
+        <a href="{{ url_for('new_complaint') }}">New Complaint</a>
+        <a href="{{ url_for('logout') }}">Logout</a>
+    </div>
+</nav>
+
+<div class="container">
+
+    <h1 class="page-title">
+        Welcome, {{ session.get('name', 'User') }}!
+    </h1>
+
+    <p>Manage your civic complaints from your dashboard.</p>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% for category, message in messages %}
+            <div class="alert {{ category }}">{{ message }}</div>
+        {% endfor %}
+    {% endwith %}
+
+    <div style="margin-top:20px;">
+        <a href="{{ url_for('new_complaint') }}" class="btn">
+            + Submit New Complaint
+        </a>
+    </div>
+
+    <h2 style="margin-top:30px;">My Complaints</h2>
+
+    {% if complaints %}
+
+        <div class="table-container">
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Title</th>
+                        <th>Category</th>
+                        <th>Location</th>
+                        <th>Status</th>
+                        <th>Date</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for complaint in complaints %}
+                    <tr>
+                        <td>{{ complaint['id'] }}</td>
+                        <td>{{ complaint['title'] }}</td>
+                        <td>{{ complaint['category'] }}</td>
+                        <td>{{ complaint['location'] }}</td>
+                        <td>
+                            <span class="badge {{ complaint['status'].replace(' ', '-') }}">
+                                {{ complaint['status'] }}
+                            </span>
+                        </td>
+                        <td>{{ complaint['created_at'] }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+    {% else %}
+
+        <div class="card empty">
+            <h3>No complaints yet</h3>
+            <p>Submit your first complaint to get started.</p>
+        </div>
+
+    {% endif %}
+
+</div>
+
+<footer>
+    <p>CityCare | User Dashboard</p>
+</footer>
+
+</body>
+</html>
